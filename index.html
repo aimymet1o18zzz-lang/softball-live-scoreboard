@@ -3,58 +3,124 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
 <title>Softball Live Scoreboard</title>
+
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    font-family: Arial, sans-serif;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-family: Arial, sans-serif;
+}
 
-  #board {
-    width: 510px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    background: #142b3c;
-    color: white;
-    border-radius: 8px;
-  }
+#board {
+  width: 510px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: #142b3c;
+  color: white;
+  border-radius: 8px;
+}
 
-  .team {
-    font-size: 19px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
+.team {
+  font-size: 19px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
 
-  .score {
-    font-size: 26px;
-    font-weight: bold;
-  }
+.score {
+  font-size: 26px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
 
-  .inning {
-    margin-left: auto;
-    background: #38566d;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 19px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
+.inning {
+  margin-left: auto;
+  background: #38566d;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 19px;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
 </style>
 </head>
+
 <body>
-  <div id="board">
-    <span class="team" id="teamA">VONDS</span>
-    <span class="score" id="scoreA">1</span>
-    <span>−</span>
-    <span class="score" id="scoreB">0</span>
-    <span class="team" id="teamB">ペヤング</span>
-    <span class="inning" id="inning">1回表</span>
-  </div>
+
+<div id="board">
+  <span class="team" id="teamA">VONDS</span>
+  <span class="score" id="scoreA">0</span>
+  <span>−</span>
+  <span class="score" id="scoreB">0</span>
+  <span class="team" id="teamB">ペヤング</span>
+  <span class="inning" id="inning">1回表</span>
+</div>
+
+<script>
+
+// ★ここにApps Scriptの表示専用URLを入力
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzoC-2NZmj89mr0scke_6DJNj_hUqruqEYce8dmVBz_1IvOCJnyt2FHp6nSuslZ4_MV/exec";
+
+// Apps Scriptから受け取ったデータを表示
+function scoreCallback(data) {
+  document.getElementById("teamA").textContent =
+    data.teamA;
+
+  document.getElementById("teamB").textContent =
+    data.teamB;
+
+  document.getElementById("scoreA").textContent =
+    data.scoreA;
+
+  document.getElementById("scoreB").textContent =
+    data.scoreB;
+
+  document.getElementById("inning").textContent =
+    data.inning + "回" + data.half;
+}
+
+// 10秒ごとに最新データを取得
+function refreshScore() {
+  const script = document.createElement("script");
+
+  const separator = API_URL.includes("?") ? "&" : "?";
+
+  script.src =
+    API_URL + separator +
+    "mode=score&callback=scoreCallback&t=" +
+    Date.now();
+
+  script.onload = function() {
+    script.remove();
+  };
+
+  script.onerror = function() {
+    console.error("スコア取得に失敗しました");
+    script.remove();
+  };
+
+  document.body.appendChild(script);
+}
+
+// 最初に読み込む
+refreshScore();
+
+// 10秒ごとに更新
+setInterval(refreshScore, 10000);
+
+</script>
+
 </body>
 </html>
+
