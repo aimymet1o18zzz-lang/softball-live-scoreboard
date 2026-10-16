@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Softball Live Scoreboard</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    font-family: Arial, sans-serif;
+  }
+
+  #board {
+    width: 510px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #142b3c;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .team {
+    font-size: 19px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .score {
+    font-size: 26px;
+    font-weight: bold;
+  }
+
+  .inning {
+    margin-left: auto;
+    background: #38566d;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 19px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div id="board">
+    <span class="team" id="teamA">VONDS</span>
+    <span class="score" id="scoreA">1</span>
+    <span>−</span>
+    <span class="score" id="scoreB">0</span>
+    <span class="team" id="teamB">ペヤング</span>
+    <span class="inning" id="inning">1回表</span>
+  </div>
+</body>
+</html>
